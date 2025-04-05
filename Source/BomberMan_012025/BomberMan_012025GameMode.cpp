@@ -43,59 +43,64 @@ void ABomberMan_012025GameMode::BeginPlay()
             int32 valor = aMapaBloques[fila][columna];
             // Calculamos la posiciÛn del bloque
             FVector posicionBloque = FVector(
-            XInicial + columna * AnchoBloque,
-            YInicial + fila * LargoBloque,
-            20.0f); // Z queda en 0 (altura del bloque)
+                XInicial + columna * AnchoBloque,
+                YInicial + fila * LargoBloque,
+                20.0f); // Z queda en 0 (altura del bloque)
             // Llamamos a la funcion para generar un bloque
             SpawnBloque(posicionBloque, valor);
-            
+
         }
     }
-    
+
     AsignarMovimientosAleatorios();
-    
+
 }
 
 // Funcion para generar un bloque
 void ABomberMan_012025GameMode::SpawnBloque(FVector posicionBloque, int32 tipoBloque)
 {
-    //ABloque* BloqueGenerado = nullptr;
-
     ABloque* BloqueGenerado = nullptr;
+
     // Elegir tipo de bloque basado en el valor
     if (tipoBloque == 10)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueOro>(ABloqueOro::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-
-    }else if (tipoBloque == 9)
+    }
+    else if (tipoBloque == 9)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueRoble>(ABloqueRoble::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-
-    }else if (tipoBloque == 8)
+    }
+    else if (tipoBloque == 8)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueCobre>(ABloqueCobre::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-    }else if (tipoBloque == 7)
+    }
+    else if (tipoBloque == 7)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueGrava>(ABloqueGrava::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-    }else if (tipoBloque == 6)
+    }
+    else if (tipoBloque == 6)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueArena>(ABloqueArena::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-    }else if (tipoBloque == 5)
+    }
+    else if (tipoBloque == 5)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloquePasto>(ABloquePasto::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-    }else if (tipoBloque == 4)
+    }
+    else if (tipoBloque == 4)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueAcero>(ABloqueAcero::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-    }else if (tipoBloque == 3)
+    }
+    else if (tipoBloque == 3)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueConcreto>(ABloqueConcreto::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-    }else if (tipoBloque == 2)
+    }
+    else if (tipoBloque == 2)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueLadrillo>(ABloqueLadrillo::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-    }else if (tipoBloque == 1)
+    }
+    else if (tipoBloque == 1)
     {
         BloqueGenerado = GetWorld()->SpawnActor<ABloqueMadera>(ABloqueMadera::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-
     }
     else if (tipoBloque == 0)
     {
@@ -103,127 +108,89 @@ void ABomberMan_012025GameMode::SpawnBloque(FVector posicionBloque, int32 tipoBl
         if (probabilidad < 0.1f) // 10% de probabilidad de spawnear
         {
             float probabilidad2 = FMath::RandRange(0.0f, 1.0f);
-            if(probabilidad2 < 0.25f)
-            AEnemigo* enemigo =GetWorld()->SpawnActor<AEnemigo>(AEnemigoAereo::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-            if(probabilidad2 < 0.5f && probabilidad2 > 0.25f)
-            AEnemigo* enemigo =GetWorld()->SpawnActor<AEnemigo>(AEnemigoTerrestre::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-            if(probabilidad2 < 0.75f && probabilidad2 > 0.5f)
-            AEnemigo* enemigo =GetWorld()->SpawnActor<AEnemigo>(AEnemigoAcuatico::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-            if(probabilidad2 > 0.75f)
-            AEnemigo* enemigo =GetWorld()->SpawnActor<AEnemigo>(AEnemigoSubterraneo::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
-
+            if (probabilidad2 < 0.25f)
+                GetWorld()->SpawnActor<AEnemigoAereo>(AEnemigoAereo::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
+            else if (probabilidad2 < 0.5f)
+                GetWorld()->SpawnActor<AEnemigoTerrestre>(AEnemigoTerrestre::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
+            else if (probabilidad2 < 0.75f)
+                GetWorld()->SpawnActor<AEnemigoAcuatico>(AEnemigoAcuatico::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
+            else
+                GetWorld()->SpawnActor<AEnemigoSubterraneo>(AEnemigoSubterraneo::StaticClass(), posicionBloque, FRotator(0.0f, 0.0f, 0.0f));
         }
     }
 
     // Agregar el bloque al TArray si fue generado
     if (BloqueGenerado)
     {
+        // Ajustar la escala
         FVector EscalaActual = BloqueGenerado->GetActorScale3D();
-
-        // Ajustar el valor de la altura (Z)
-        EscalaActual.Z *= 2.0f; // Aumenta la altura 2 veces (puedes cambiar el valor segun desees)
+        EscalaActual.Z *= 2.0f; // Aumenta la altura 2 veces
         BloqueGenerado->SetActorScale3D(EscalaActual);
-    }
 
+        // Agregar el bloque al array aBloques
+        aBloques.Add(BloqueGenerado);
+    }
 }
 
 
 void ABomberMan_012025GameMode::AsignarMovimientosAleatorios()
 {
-    TArray<ABloque*> Ladrillos, Maderas, Aceros, Concretos, Burbujas;
+    // Arrays para almacenar los diferentes tipos de bloques
+    TArray<ABloque*> Ladrillos, Maderas, Aceros, Concretos, Pastos, Arenas, Gravas, Cobres, Robles, Oros;
 
+    // Clasificar los bloques según su tipo
     for (ABloque* Bloque : aBloques)
     {
         if (Bloque->IsA(ABloqueLadrillo::StaticClass())) Ladrillos.Add(Bloque);
         else if (Bloque->IsA(ABloqueMadera::StaticClass())) Maderas.Add(Bloque);
         else if (Bloque->IsA(ABloqueAcero::StaticClass())) Aceros.Add(Bloque);
         else if (Bloque->IsA(ABloqueConcreto::StaticClass())) Concretos.Add(Bloque);
-        else if (Bloque->IsA(ABloqueBurbuja::StaticClass())) Burbujas.Add(Bloque);
+        else if (Bloque->IsA(ABloquePasto::StaticClass())) Pastos.Add(Bloque);
+        else if (Bloque->IsA(ABloqueArena::StaticClass())) Arenas.Add(Bloque);
+        else if (Bloque->IsA(ABloqueGrava::StaticClass())) Gravas.Add(Bloque);
+        else if (Bloque->IsA(ABloqueCobre::StaticClass())) Cobres.Add(Bloque);
+        else if (Bloque->IsA(ABloqueRoble::StaticClass())) Robles.Add(Bloque);
+        else if (Bloque->IsA(ABloqueOro::StaticClass())) Oros.Add(Bloque);
     }
 
-    auto AsignarMovimiento = [](TArray<ABloque*>& Lista, int Tipo, int DirX, int DirY, int DirZ)
-    {
-        if (Lista.Num() > 0)
+    // Función para asignar movimiento a 2 bloques aleatorios de un tipo
+    auto AsignarMovimiento = [](TArray<ABloque*>& Lista, int Tipo, int DirX, int DirY, int DirZ, float Velocidad = 100.0f)
         {
-            int i = FMath::RandRange(0, Lista.Num() - 1);
-            ABloque* Bloque = Lista[i];
-            Bloque->TipoMovimiento = Tipo;
-            Bloque->DireccionMovimientoX = DirX;
-            Bloque->DireccionMovimientoY = DirY;
-            Bloque->DireccionMovimientoZ = DirZ;
-            Bloque->bPuedeMoverse = true;
-        }
-    };
+            if (Lista.Num() >= 2)
+            {
+                // Mezclar el array para selección aleatoria
+                for (int32 i = 0; i < Lista.Num(); i++)
+                {
+                    int32 j = FMath::RandRange(0, Lista.Num() - 1);
+                    if (i != j)
+                    {
+                        Lista.Swap(i, j);
+                    }
+                }
 
-    AsignarMovimiento(Ladrillos, 0, 1, 0, 0);   // X
-    AsignarMovimiento(Maderas, 1, 0, 1, 0);     // Y
-    AsignarMovimiento(Aceros, 2, 0, 0, 1);      // Z
-    AsignarMovimiento(Concretos, 0, -1, 0, 0);  // -X
-    AsignarMovimiento(Burbujas, 1, 0, -1, 0);   // -Y
+                // Seleccionar los primeros 2 bloques después de mezclar
+                for (int32 i = 0; i < 2 && i < Lista.Num(); i++)
+                {
+                    ABloque* Bloque = Lista[i];
+                    Bloque->TipoMovimiento = Tipo;
+                    Bloque->DireccionMovimientoX = DirX;
+                    Bloque->DireccionMovimientoY = DirY;
+                    Bloque->DireccionMovimientoZ = DirZ;
+                    Bloque->FloatSpeed = Velocidad;
+                    Bloque->bPuedeMoverse = true;
+                }
+            }
+        };
+
+    // Asignar movimientos específicos para cada tipo de bloque
+    AsignarMovimiento(Ladrillos, 0, 1, 0, 0, 80.0f);    // Ladrillo: Eje X, Velocidad 80
+    AsignarMovimiento(Maderas, 1, 0, 1, 0, 70.0f);      // Madera: Eje Y, Velocidad 70
+    AsignarMovimiento(Aceros, 2, 0, 0, 1, 50.0f);       // Acero: Eje Z, Velocidad 50
+    AsignarMovimiento(Concretos, 0, -1, 0, 0, 60.0f);   // Concreto: Eje -X, Velocidad 60
+    AsignarMovimiento(Pastos, 1, 0, -1, 0, 120.0f);     // Pasto: Eje -Y, Velocidad 120
+    AsignarMovimiento(Arenas, 2, 0, 0, -1, 130.0f);     // Arena: Eje -Z, Velocidad 130
+    AsignarMovimiento(Gravas, 0, 1, 1, 0, 75.0f);       // Grava: Diagonal X+Y, Velocidad 75
+    AsignarMovimiento(Cobres, 1, 0, 1, 1, 65.0f);       // Cobre: Diagonal Y+Z, Velocidad 65
+    AsignarMovimiento(Robles, 2, 1, 0, 1, 85.0f);       // Roble: Diagonal X+Z, Velocidad 85
+    AsignarMovimiento(Oros, 0, -1, -1, 0, 100.0f);      // Oro: Diagonal -X-Y, Velocidad 100
 }
-
-/*
- 
- 
- Gamemode.cpp
- 
- 
- void ABomberMan_012025GameMode::BeginPlay()
- {
- Super::BeginPlay();
- 
- // Crear los bloques según el mapa
- for (int32 fila = 0; fila < aMapaBloques.Num(); ++fila)
- {
- for (int32 columna = 0; columna < aMapaBloques[fila].Num(); ++columna)
- {
- int32 valor = aMapaBloques[fila][columna];
- if (valor != 0)
- {
- FVector posicion = FVector(
- XInicial + columna * AnchoBloque,
- YInicial + fila * LargoBloque,
- 20.0f);
- SpawnBloque(posicion, valor);
- }
- }
- }
- 
- AsignarMovimientosAleatorios();
- 
- }
- 
- void ABomberMan_012025GameMode::AsignarMovimientosAleatorios()
- {
- TArray<ABloque*> Ladrillos, Maderas, Aceros, Concretos, Burbujas;
- 
- for (ABloque* Bloque : aBloques)
- {
- if (Bloque->IsA(ABloqueLadrillo::StaticClass())) Ladrillos.Add(Bloque);
- else if (Bloque->IsA(ABloqueMadera::StaticClass())) Maderas.Add(Bloque);
- else if (Bloque->IsA(ABloqueAcero::StaticClass())) Aceros.Add(Bloque);
- else if (Bloque->IsA(ABloqueConcreto::StaticClass())) Concretos.Add(Bloque);
- else if (Bloque->IsA(ABloqueBurbuja::StaticClass())) Burbujas.Add(Bloque);
- }
- 
- auto AsignarMovimiento = [](TArray<ABloque*>& Lista, int Tipo, int DirX, int DirY, int DirZ)
- {
- if (Lista.Num() > 0)
- {
- int i = FMath::RandRange(0, Lista.Num() - 1);
- ABloque* Bloque = Lista[i];
- Bloque->TipoMovimiento = Tipo;
- Bloque->DireccionMovimientoX = DirX;
- Bloque->DireccionMovimientoY = DirY;
- Bloque->DireccionMovimientoZ = DirZ;
- Bloque->bPuedeMoverse = true;
- }
- };
- 
- AsignarMovimiento(Ladrillos, 0, 1, 0, 0);   // X
- AsignarMovimiento(Maderas, 1, 0, 1, 0);     // Y
- AsignarMovimiento(Aceros, 2, 0, 0, 1);      // Z
- AsignarMovimiento(Concretos, 0, -1, 0, 0);  // -X
- AsignarMovimiento(Burbujas, 1, 0, -1, 0);   // -Y
- }
- */
